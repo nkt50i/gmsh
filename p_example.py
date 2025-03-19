@@ -54,6 +54,9 @@ geometry.generate_mesh(dim=2)
 # Запись сетки в файл
 gmsh.write("mesh.msh")
 
+# Визуализация сетки
+gmsh.fltk.run()
+
 # Очистка модели и завершение работы
 gmsh.clear()
 geometry.__exit__()
