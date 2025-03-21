@@ -23,11 +23,12 @@ def run_gmsh(file_path):
         st.success("Gmsh успешно запущен в программном режиме!")
     except FileNotFoundError:
         st.error("Gmsh не найден. Убедитесь, что он установлен и доступен в PATH.")
-    except subprocess.CalledProcessError:
-        st.error("Ошибка при запуске Gmsh.")
+    except subprocess.CalledProcessError as e:
+        st.error(f"Ошибка при запуске Gmsh: {e.returncode}")
+        st.text(f"Вывод ошибки:\n{e.stderr}")
+    
 
 st.set_page_config(page_title="Руководство по работе с Gmsh", layout="wide")
-st.sidebar.title("Навигация")
 sections = {
     "Общая характеристика ПО": "",
     "Установка": "",
@@ -123,6 +124,7 @@ if choice == "Общая характеристика ПО":
     st.write("""##### Ссылки и ресурсы""")
     st.markdown("[Официальный сайт Gmsh](https://gmsh.info/)")
     st.markdown("[Документация Gmsh](https://gmsh.info/doc/texinfo/gmsh.html)")
+
 
 elif choice == "Установка":
 
@@ -276,8 +278,19 @@ elif choice == "Геометрические элементы":
             - **Теги начальной и конечной точек**
 
             """)
-            x1, y1, z1 = st.number_input("X1", value=0.0), st.number_input("Y1", value=0.0), st.number_input("Z1", value=0.0)
-            x2, y2, z2 = st.number_input("X2", value=1.0), st.number_input("Y2", value=0.0), st.number_input("Z2", value=0.0)
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                x1 = st.number_input("X1", value=0.0)
+                x2 = st.number_input("X2", value=1.0)
+
+            with col2:
+                y1 = st.number_input("Y1", value=0.0)
+                y2 = st.number_input("Y2", value=0.0)
+
+            with col3:
+                z1 = st.number_input("Z1", value=0.0)
+                z2 = st.number_input("Z2", value=0.0)
             geo_code = f"""
             //Line
             Point(1) = {{{x1}, {y1}, {z1}, 1.0}};
@@ -326,7 +339,6 @@ elif choice == "Геометрические элементы":
             geo_code = geo_code.lstrip()
 
             
-
 
         elif element_type == "Spline":
 
@@ -428,7 +440,7 @@ elif choice == "Геометрические элементы":
             """)
             
             st.write("""
-             - Со встроенным ядрoм геометрии дуга должна быть строго меньше числа Пи.
+             - Со встроенным ядрoм геометрии дуга должна быть строго меньше числа π.
              - С ядром OpenCASCADE, если указано от 4 до 6 точек, первые три определяют координаты центра, следующие определяет радиус, а последние 2 определяют угол.
             """)
 
@@ -1711,7 +1723,7 @@ elif choice == "Составные области":
 
                 // Объединяем границы для сетки
                 Compound Surface(200) = {1, 2, 5, 6}; // Внешние грани
-                Physical Surface("External_Walls") = {200};
+                Physical Surface("External_Walls") = {Surface{:}};
                 
                 Mesh.CharacteristicLengthMin = 0.2;
                 Mesh 3;
