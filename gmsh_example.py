@@ -4,7 +4,7 @@ import gmsh
 gmsh.initialize()
 
 # Задание разрешения сетки
-resolution = 0.01
+resolution = 0.001
 
 # Параметры канала
 L = 2.2

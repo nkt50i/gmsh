@@ -9,6 +9,4 @@
 
     // Вычитание диска из прямоугольника
     BooleanDifference(3) = { Surface{1}; Delete; }{ Surface{2}; Delete; };
-
-    // Генерация 2D-сетки
-    Mesh 2;
+    
