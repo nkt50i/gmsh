@@ -22,10 +22,10 @@ circle_loop = model.occ.addCurveLoop([circle])
 
 # Добавление точек для канала
 points = [
-    model.occ.addPoint(0, 0, 0, meshSize=5 * resolution),
-    model.occ.addPoint(L, 0, 0, meshSize=5 * resolution),
-    model.occ.addPoint(L, H, 0, meshSize=5 * resolution),
-    model.occ.addPoint(0, H, 0, meshSize=5 * resolution),
+    model.occ.addPoint(0, 0, 0, meshSize=0.1 * resolution),
+    model.occ.addPoint(L, 0, 0, meshSize=0.1 * resolution),
+    model.occ.addPoint(L, H, 0, meshSize=0.1 * resolution),
+    model.occ.addPoint(0, H, 0, meshSize=0.1 * resolution),
 ]
 
 # Добавление линий между точками для создания прямоугольника
@@ -51,22 +51,20 @@ model.addPhysicalGroup(1, [circle], 4)  # Препятствие
 
 # Настройка параметров сетки для использования криволинейных элементов (второго порядка)
 gmsh.option.setNumber("Mesh.ElementOrder", 2)  # Использовать элементы второго порядка
-gmsh.option.setNumber("Mesh.SecondOrderLinear", 0)  # Гарантировать использование криволинейных элементов
+gmsh.option.setNumber("Mesh.SecondOrderLinear", 1)  # Гарантировать использование криволинейных элементов
 
 # Создание поля размера для уточнения сетки вблизи окружности
-# 1. Создание поля расстояния для измерения расстояния от окружности
 distance_field = model.mesh.field.add("Distance")
 model.mesh.field.setNumbers(distance_field, "CurvesList", [circle])
 
-# 2. Создание порогового поля для задания размера сетки в зависимости от расстояния
 threshold_field = model.mesh.field.add("Threshold")
 model.mesh.field.setNumber(threshold_field, "IField", distance_field)
-model.mesh.field.setNumber(threshold_field, "LcMin", resolution)  # Минимальный размер элементов вблизи окружности
-model.mesh.field.setNumber(threshold_field, "LcMax", 5 * resolution)  # Максимальный размер элементов вдали от окружности
+model.mesh.field.setNumber(threshold_field, "LcMin", 0.05 * resolution)  # Минимальный размер элементов вблизи окружности
+model.mesh.field.setNumber(threshold_field, "LcMax", 2 * resolution)  # Максимальный размер элементов вдали от окружности
 model.mesh.field.setNumber(threshold_field, "DistMin", r)  # Начало области уточнения на границе окружности
 model.mesh.field.setNumber(threshold_field, "DistMax", 2 * r)  # Конец области уточнения на расстоянии 2*r от окружности
 
-# 3. Установка порогового поля как фонового поля размера сетки
+# Установка порогового поля как фонового поля размера сетки
 model.mesh.field.setAsBackgroundMesh(threshold_field)
 
 # Генерация 2D сетки
