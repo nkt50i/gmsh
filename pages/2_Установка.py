@@ -54,11 +54,11 @@ st.write("""
 
 - **Linux:**
     1. Используйте команду для установки Gmsh через пакетный менеджер:
-        - Для Ubuntu/Debian:
+        - для Ubuntu/Debian:
             ```bash
             sudo apt-get install gmsh
             ```
-        - Для Fedora:
+        - для Fedora:
             ```bash
             sudo dnf install gmsh
             ```

@@ -14,9 +14,6 @@
                 Physical Volume("Result") = {3};      // Оставшаяся часть сферы
                 Physical Surface("CutBoundary") = {2}; // Граница выреза (бывшие грани куба)
 
-                Color Red { Volume{3} }; 
-                Color Blue { Surface{2} };
-
                 // Настройки сетки
                 Mesh.CharacteristicLengthMin = 1.0;
                 Mesh.CharacteristicLengthMax = 1.0;

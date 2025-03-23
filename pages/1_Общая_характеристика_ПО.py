@@ -32,7 +32,7 @@ sections = {
     "Общая характеристика ПО": "",
     "Основные возможности Gmsh": "",
     "Применение Gmsh": "",
-    "Ссылки и ресурсы":"",
+    "Ссылки":"",
 }
 
 choice = st.sidebar.radio("Выберите раздел", list(sections.keys()))
@@ -67,6 +67,7 @@ elif choice == "Применение Gmsh":
         - Биомеханика
         - Электромагнетизм
         - Геофизика
+        - ...
         """
         )
 elif choice == "Пример кода для создания сетки":
@@ -112,6 +113,6 @@ elif choice == "Пример кода для создания сетки":
         run_gmsh(file_path)
 
 elif choice == "Ссылки и ресурсы":
-    st.write("""##### Ссылки и ресурсы""")
+    st.write("""##### Ссылки""")
     st.markdown("[Официальный сайт Gmsh](https://gmsh.info/)")
     st.markdown("[Документация Gmsh](https://gmsh.info/doc/texinfo/gmsh.html)")
